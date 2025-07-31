@@ -1,9 +1,8 @@
 import streamlit as st
 import pandas as pd
 
-
 # データ読み込み
-df = pd.read_excel("Q1_contract.xlsx", sheet_name='Sheet1')
+df = pd.read_excel("D:\\CSV\\Contract_salary\\Q1契約データ(小澤さんへの報告用).xlsx", sheet_name='Sheet1')
 
 # 契約日を月単位に加工
 df['契約日'] = pd.to_datetime(df['契約日'])
@@ -43,7 +42,7 @@ filtered = df[
 ]
 
 # ダッシュボード表示
-st.title("入居者の属性による月額利用料")
+st.title("入居者属性による月額利用料")
 st.write(f"フィルタ後のデータ件数：{len(filtered)}件")
 
 # 平均値計算
@@ -51,14 +50,21 @@ metrics = filtered.agg({
     '家賃': 'mean',
     '共益費': 'mean',
     '環境維持費': 'mean',
-    '駐車場': 'mean',
     'インターネット': 'mean',
     '月額利用料': 'mean',
     '抗菌施行販売金額': 'mean'
 }).rename(lambda x: '平均' + x)
 
+# 駐車場の平均値計算（値が0ではないもののみ）
+parking_filtered = filtered[filtered['駐車場'] > 0]
+parking_mean = parking_filtered['駐車場'].mean()
+metrics['平均駐車場'] = parking_mean
+
 # 抗菌施行販売金額の利用者数計算
 antibacterial_usage_count = (filtered['抗菌施行販売金額'] > 0).sum()
+
+# 駐車場利用者数計算
+parking_usage_count = len(parking_filtered)
 
 # 数値表示
 st.subheader("平均値")
@@ -66,6 +72,8 @@ for label, value in metrics.items():
     st.metric(label, f"{value:,.0f}円")
     if label == '平均抗菌施行販売金額':
         st.write(f"抗菌施行販売金額の値が0ではない人の人数: {antibacterial_usage_count}人")
+    if label == '平均駐車場':
+        st.write(f"駐車場利用者数: {parking_usage_count}人")
 
 # 最大値計算
 max_metrics = filtered.agg({
