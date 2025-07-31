@@ -52,7 +52,7 @@ metrics = filtered.agg({
     '環境維持費': 'mean',
     'インターネット': 'mean',
     '月額利用料': 'mean',
-    '抗菌施行販売金額': 'mean'
+    '抗菌施工販売金額': 'mean'
 }).rename(lambda x: '平均' + x)
 
 # 駐車場の平均値計算（値が0ではないもののみ）
@@ -61,7 +61,7 @@ parking_mean = parking_filtered['駐車場'].mean()
 metrics['平均駐車場'] = parking_mean
 
 # 抗菌施行販売金額の利用者数計算
-antibacterial_usage_count = (filtered['抗菌施行販売金額'] > 0).sum()
+antibacterial_usage_count = (filtered['抗菌施工販売金額'] > 0).sum()
 
 # 駐車場利用者数計算
 parking_usage_count = len(parking_filtered)
@@ -71,14 +71,15 @@ st.subheader("平均値")
 for label, value in metrics.items():
     st.metric(label, f"{value:,.0f}円")
     if label == '平均抗菌施行販売金額':
-        st.write(f"抗菌施行販売金額の値が0ではない人の人数: {antibacterial_usage_count}人")
+        st.write(f"抗菌施工人数: {antibacterial_usage_count}人")
     if label == '平均駐車場':
         st.write(f"駐車場利用者数: {parking_usage_count}人")
 
 # 最大値計算
 max_metrics = filtered.agg({
     '月額利用料': 'max',
-    '抗菌施行販売金額': 'max'
+    '抗菌施工販売金額': 'max',
+    '駐車場': 'max'
 }).rename(lambda x: '最大' + x)
 
 # 最大値表示
