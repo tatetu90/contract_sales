@@ -60,7 +60,7 @@ parking_filtered = filtered[filtered['駐車場'] > 0]
 parking_mean = parking_filtered['駐車場'].mean()
 metrics['平均駐車場'] = parking_mean
 
-# 抗菌施行販売金額の利用者数計算
+# 抗菌施工販売金額の利用者数計算
 antibacterial_usage_count = (filtered['抗菌施工販売金額'] > 0).sum()
 
 # 駐車場利用者数計算
@@ -70,7 +70,7 @@ parking_usage_count = len(parking_filtered)
 st.subheader("平均値")
 for label, value in metrics.items():
     st.metric(label, f"{value:,.0f}円")
-    if label == '平均抗菌施行販売金額':
+    if label == '平均抗菌施工販売金額':
         st.write(f"抗菌施工人数: {antibacterial_usage_count}人")
     if label == '平均駐車場':
         st.write(f"駐車場利用者数: {parking_usage_count}人")
