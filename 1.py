@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # データ読み込み
-df = pd.read_excel("D:\\CSV\\Contract_salary\\Q1契約データ(小澤さんへの報告用).xlsx", sheet_name='Sheet1')
+df = pd.read_excel("Q1_contract.xlsx", sheet_name='Sheet1')
 
 # 契約日を月単位に加工
 df['契約日'] = pd.to_datetime(df['契約日'])
